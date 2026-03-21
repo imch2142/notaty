@@ -4,7 +4,8 @@ const Note = require('./schema/note')
 class Database {
     constructor() {
         // this.Url = "mongodb://localhost:27017/notaty"
-       this.Url=process.env.MONGODB_URL|| "mongodb://admin:admin123@ac-omivog3-shard-00-00.ybyfsvg.mongodb.net:27017,ac-omivog3-shard-00-01.ybyfsvg.mongodb.net:27017,ac-omivog3-shard-00-02.ybyfsvg.mongodb.net:27017/notaty?ssl=true&replicaSet=atlas-dkz8we-shard-0&authSource=admin&retryWrites=true&w=majority"
+       this.Url = process.env.MONGODB_URL || 
+"mongodb+srv://admin:admin123@ac-omivog3.ybyfsvg.mongodb.net/notaty?retryWrites=true&w=majority";
 
        }
 

@@ -1,14 +1,29 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 const Database = require("./Database");
 const db = new Database();
 
-app.use(cors());
+// app.use(cors());
+// app.use(cors({
+//     origin: "*",
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type"]
+// }));
+app.use(cors({
+    origin: "https://imch2142.github.io"
+}));
+app.options("*", cors());
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Serve static files from the client directory
+app.use(express.static(path.join(__dirname, '../client')));
 
 
 
@@ -19,7 +34,7 @@ app.post("/notes", (req, res) => {
     db.addNote(body).then(data => {
         res.send(data);
     }).catch((err) => {
-        res.status(500);
+        res.status(500).send(err);
     });
 
 });
@@ -78,7 +93,8 @@ app.delete('/notes/:id', (req, res) => {
     const { id } = req.params;
     db.deleteNote(id).then(data => {
         if (!data) {
-            res.status(404).send("Note id dos not exist  "+id);
+            res.status(404).send("Note id dos not exist  ");
+            
 
         }
         else {
