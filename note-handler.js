@@ -1,35 +1,40 @@
-function updateNotesTable(noteId, noteTitle) {
-    const table = document.getElementById("notes-table");
-    table.querySelector("tbody").innerHTML = ""; // مسح كل الصفوف القديمة
+function updateNotesTable(noteId,noteTitle){
+    var table=document.getElementById("notes-table");
+    var rowCount=table.rows.length;
+    while(--rowCount){
+        table.deleteRow(rowCount);
+    }
 
-    getNote(noteTitle).then(data => {
+
+    getNote(noteTitle).then(data=>{
         data.forEach(note => {
-            const row = table.insertRow();
-            row.id = note._id;
+            var row=table.insertRow(1);
+            var idArtt=document.createAttribute("id");
+            idArtt.value=note['_id'];
+            row.setAttributeNode (idArtt);
 
-            row.insertCell(0).innerText = note.title;
-            row.insertCell(1).innerText = note.content;
-            row.insertCell(2).innerText = new Date(note.updatedDate).toLocaleString();
-            row.insertCell(3).innerHTML = `
-                <a onclick="openEditModel('${note._id}')" href="#">
-                    <img src="images/edit.png" style="width:22px;">
-                </a>
-                <a onclick="confirmDeleteNote('${note._id}')" href="#">
-                    <img src="images/delete.png" style="width:22px;">
-                </a>
-            `;
+
+            var cell1=row.insertCell(0);
+            var cell2=row.insertCell(1);
+            var cell3=row.insertCell(2);
+            var cell4=row.insertCell(3);
+            cell1.innerHTML=note["title"];
+            cell2.innerHTML=note["content"];
+            cell3.innerHTML=note["updatedDate"];
+            cell4.innerHTML=`<a onclick="openEditModel('${note["_id"]}')" href="#"><img src="images/edit.png" style="width:22px;"><a>
+                             <a onclick="confirmDeleteNote('${note["_id"]}')" href="#"><img src="images/delete.png" style="width:22px;"><a>`
+
+
         });
-
-        // تمييز الصف الجديد أو المعدل
-        if (noteId) {
-            const row = document.getElementById(noteId);
-            if (row) row.style.animation = "new-row 5s";
+    }).then(()=>{
+        if(noteId){
+            var row=document.getElementById(noteId);
+            row.setAttribute("style","animation:new-row 5s;");
         }
-    }).catch(err => console.error(err));
+    })
+
+
 }
-
-
-
 
 function searchNotes(){
     const searchTitle=document.getElementById("searchInput").value;
