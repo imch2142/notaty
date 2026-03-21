@@ -49,37 +49,33 @@ function clearEditModal() {
 
 
 function openEditModel(noteId) {
-    var model = document.getElementById("editNoteModal");
-    var closeSpan = document.getElementById("closeEdit");
-    var cancelButton = document.getElementById("cancelEditNoteBtn");
-
-    clearEditModal();
+    const model = document.getElementById("editNoteModal");
     model.style.display = "block";
-    closeSpan.onclick = () => {
-        model.style.display = "none";
+    clearEditModal(); // مسح القيم القديمة
 
-    }
-    cancelButton.onclick = () => {
-        model.style.display = "none";
-
-    }
     loadNoteData(noteId);
 }
 
+
 function loadNoteData(noteId) {
-    var model=document.getElementById("editNoteModal");
-    var noteIdAttribute=document.createAttribute("noteid");
-    noteIdAttribute.value=noteId;
-    model.setAttributeNode(noteIdAttribute);
+    const model = document.getElementById("editNoteModal");
+    model.setAttribute("noteid", noteId);
 
-    getNoteById(noteId).then(data => {
-        document.getElementById("editTitle").value = data["title"];
-        document.getElementById("editContent").value = data["content"];
-
-
-    });
-
+    getNoteById(noteId)
+        .then(data => {
+            if (data && data._id) { // تأكد من وجود البيانات
+                document.getElementById("editTitle").value = data.title;
+                document.getElementById("editContent").value = data.content;
+            } else {
+                document.getElementById("editError").innerText = "Failed to load note data!";
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById("editError").innerText = err;
+        });
 }
+
 
 function saveEditNote() {
      const model = document.getElementById("editNoteModal");
