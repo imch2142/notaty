@@ -114,8 +114,9 @@ function saveEditNote() {
     updateNote(noteData).then(response=>{
         if (response.ok) {
             model.style.display = "none";
-            updateNotesTable(noteId);
-        } else {
+            // إعادة تحميل الجدول
+            getNote().then(data => updateNotesTable(noteData._id));
+        }else {
             response.text().then(err => {
                 document.getElementById("editError").innerHTML = err;
             })
