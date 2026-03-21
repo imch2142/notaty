@@ -18,28 +18,22 @@ function openAddModal() {
 }
 
 function saveNewNote() {
-    const model = document.getElementById("addNoteModal");
-    const title = document.getElementById("addTitle").value.trim();
+     const title = document.getElementById("addTitle").value.trim();
     const content = document.getElementById("addContent").value.trim();
+    if (!title || !content) return;
 
-    if (!title || !content) {
-        document.getElementById("addError").innerText = "Title and Content are required!";
-        return;
-    }
-
-    addNote({ title, content }).then(response => {
-        if (response.ok) {
-            model.style.display = "none";
-            // إعادة تحميل الجدول بالكامل
-            updateNotesTable(); 
-        } else {
-            response.text().then(err => document.getElementById("addError").innerText = err);
+    addNote({ title, content }).then(res => {
+        if (res.ok) {
+            res.json().then(note => {
+                updateNotesTable(note._id); // عرض الجدول مع تمييز الملاحظة الجديدة
+                document.getElementById("addNoteModal").style.display = "none";
+                clearAddModel();
+            });
         }
-    }).catch(err => {
-        console.error(err);
-        document.getElementById("addError").innerText = err;
     });
+
 }
+
 
 function clearAddModel() {
     var titleString = document.getElementById("addTitle").value = "";
@@ -88,25 +82,16 @@ function loadNoteData(noteId) {
 }
 
 function saveEditNote() {
-    const model = document.getElementById("editNoteModal");
+     const model = document.getElementById("editNoteModal");
     const noteId = model.getAttribute("noteid");
     const title = document.getElementById("editTitle").value.trim();
     const content = document.getElementById("editContent").value.trim();
 
-    if (!title || !content) {
-        document.getElementById("editError").innerText = "Title and Content are required!";
-        return;
-    }
-
-    updateNote({ _id: noteId, title, content }).then(response => {
-        if (response.ok) {
+    updateNote({ _id: noteId, title, content }).then(res => {
+        if (res.ok) {
+            updateNotesTable(noteId); // عرض الجدول مع تمييز الملاحظة المعدلة
             model.style.display = "none";
-            updateNotesTable(); // إعادة تحميل الجدول
-        } else {
-            response.text().then(err => document.getElementById("editError").innerText = err);
+            clearEditModal();
         }
-    }).catch(err => {
-        console.error(err);
-        document.getElementById("editError").innerText = err;
     });
 }
