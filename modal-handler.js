@@ -18,76 +18,107 @@ function openAddModal() {
 }
 
 function saveNewNote() {
-     const title = document.getElementById("addTitle").value.trim();
-    const content = document.getElementById("addContent").value.trim();
-    if (!title || !content) return;
+    var model = document.getElementById("addNoteModal");
 
-    addNote({ title, content }).then(res => {
-        if (res.ok) {
-            res.json().then(note => {
-                updateNotesTable(note._id); // عرض الجدول مع تمييز الملاحظة الجديدة
-                document.getElementById("addNoteModal").style.display = "none";
-                clearAddModel();
+    var titleString = document.getElementById("addTitle").value;
+    var contentString = document.getElementById("addContent").value;
+    if (titleString === "" || contentString === "") {
+        document.getElementById("addError").innerHTML = "Title and Content are required!";
+        return;
+    }
+    const noteData = {
+        title: titleString,
+        content: contentString
+    }
+    addNote(noteData).then(response => {
+        if (response.ok) {
+            model.style.display = "none";
+            response.json().then(json=>{
+                var newNoteId=json['_id'];
+                updateNotesTable(newNoteId);
             });
+
+          
+        } else {
+            response.text().then(err => {
+                document.getElementById("addError").innerHTML = err;
+            })
+
+
         }
-    });
+    }).catch(err => {
+        console.log(err);
+        document.getElementById("addError").innerHTML = err;
 
+    })
 }
-
-
 function clearAddModel() {
     var titleString = document.getElementById("addTitle").value = "";
     var contentString = document.getElementById("addContent").value = "";
     document.getElementById("addError").innerHTML = "";
 
 }
-function clearEditModal() {
-    document.getElementById("editTitle").value = "";
-    document.getElementById("editContent").value = "";
-    document.getElementById("editError").innerHTML = "";
-}
-
 
 function openEditModel(noteId) {
-    const model = document.getElementById("editNoteModal");
-    model.style.display = "block";
-    clearEditModal(); // مسح القيم القديمة
+    var model = document.getElementById("editNoteModal");
+    var closeSpan = document.getElementById("closeEdit");
+    var cancelButton = document.getElementById("cancelEditNoteBtn");
 
+    clearAddModel();
+    model.style.display = "block";
+    closeSpan.onclick = () => {
+        model.style.display = "none";
+
+    }
+    cancelButton.onclick = () => {
+        model.style.display = "none";
+
+    }
     loadNoteData(noteId);
 }
 
-
 function loadNoteData(noteId) {
-    const model = document.getElementById("editNoteModal");
-    model.setAttribute("noteid", noteId);
+    var model=document.getElementById("editNoteModal");
+    var noteIdAttribute=document.createAttribute("noteid");
+    noteIdAttribute.value=noteId;
+    model.setAttributeNode(noteIdAttribute);
 
-    getNoteById(noteId)
-        .then(data => {
-            if (data && data._id) { // تأكد من وجود البيانات
-                document.getElementById("editTitle").value = data.title;
-                document.getElementById("editContent").value = data.content;
-            } else {
-                document.getElementById("editError").innerText = "Failed to load note data!";
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            document.getElementById("editError").innerText = err;
-        });
+    getNoteById(noteId).then(data => {
+        document.getElementById("editTitle").value = data["title"];
+        document.getElementById("editContent").value = data["content"];
+
+
+    });
+
 }
 
 
-function saveEditNote() {
-     const model = document.getElementById("editNoteModal");
-    const noteId = model.getAttribute("noteid");
-    const title = document.getElementById("editTitle").value.trim();
-    const content = document.getElementById("editContent").value.trim();
 
-    updateNote({ _id: noteId, title, content }).then(res => {
-        if (res.ok) {
-            updateNotesTable(noteId); // عرض الجدول مع تمييز الملاحظة المعدلة
+
+function saveEditNote() {
+    var model=document.getElementById("editNoteModal");
+    const noteId=model.getAttribute("noteid");
+    const  titleString = document.getElementById("editTitle").value;
+    const  contentString = document.getElementById("editContent").value;
+    const noteData = {
+        _id:noteId,
+        title: titleString,
+        content: contentString
+    }
+    updateNote(noteData).then(response=>{
+        if (response.ok) {
             model.style.display = "none";
-            clearEditModal();
+            updateNotesTable(noteId);
+        } else {
+            response.text().then(err => {
+                document.getElementById("editError").innerHTML = err;
+            })
+
+
         }
-    });
+    }).catch(err => {
+        console.log(err);
+        document.getElementById("editError").innerHTML = err;
+
+    })
 }
