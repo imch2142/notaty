@@ -9,7 +9,6 @@ function openAddModal() {
         model.style.display = "none";
 
     }
-    
     cancelButton.onclick = () => {
         model.style.display = "none";
 
@@ -59,13 +58,19 @@ function clearAddModel() {
     document.getElementById("addError").innerHTML = "";
 
 }
+function clearEditModal() {
+    document.getElementById("editTitle").value = "";
+    document.getElementById("editContent").value = "";
+    document.getElementById("editError").innerHTML = "";
+}
+
 
 function openEditModel(noteId) {
     var model = document.getElementById("editNoteModal");
     var closeSpan = document.getElementById("closeEdit");
     var cancelButton = document.getElementById("cancelEditNoteBtn");
 
-    clearAddModel();
+    clearEditModal();
     model.style.display = "block";
     closeSpan.onclick = () => {
         model.style.display = "none";
