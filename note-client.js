@@ -1,4 +1,4 @@
-const baseUrl = "https://notaty-1.onrender.com";
+const baseUrl = "https://notaty-3.onrender.com";
 
 async function addNote(noteData) {
     const response = await fetch(`${baseUrl}/notes`, {
