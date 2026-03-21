@@ -10,7 +10,7 @@ async function addNote(noteData) {
 
 }
 async function updateNote(noteData) {
-    const response = await fetch(`${baseUrl}/notes`, {
+    const response = await fetch(`${baseUrl}/notes/${noteData._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(noteData)
