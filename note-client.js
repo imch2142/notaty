@@ -10,6 +10,7 @@ async function addNote(noteData) {
 
 }
 async function updateNote(noteData) {
+    // ملاحظة: لا تضيف noteData._id في URL
     const response = await fetch(`${baseUrl}/notes`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -17,6 +18,7 @@ async function updateNote(noteData) {
     });
     return response;
 }
+
 
 
 
