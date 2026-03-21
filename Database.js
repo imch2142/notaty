@@ -69,29 +69,17 @@ class Database {
     }
 
     UpdateNote(note) {
-    return new Promise((resolve, reject) => {
-        note["updatedDate"] = new Date();
-
-        // استخدام Note.findByIdAndUpdate وليس note.findByIdAndUpdate
-        Note.findByIdAndUpdate(
-            note["_id"],          // id
-            {                      // ما سيتم تحديثه
-                title: note.title,
-                content: note.content,
-                updatedDate: note.updatedDate
-            },
-            { new: true }          // لإرجاع النسخة المحدثة
-        )
-        .then(data => {
-            console.log(data);
-            resolve(data);
+        return new Promise((resolve, reject) => {
+            Note["updatedDate"] = new Date();
+            Note.findByIdAndUpdate(note["_id"], note).then(data => {
+                console.log(data);
+                resolve(data);
+            })
+                .catch((err) => {
+                    reject(err);
+                })
         })
-        .catch((err) => {
-            reject(err);
-        })
-    })
-}
-
+    }
 
     deleteNote(id) {
         return new Promise((resolve, reject) => {
