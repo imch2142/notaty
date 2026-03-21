@@ -96,29 +96,24 @@ function loadNoteData(noteId) {
 
 
 function saveEditNote() {
-    var model=document.getElementById("editNoteModal");
-    const noteId=model.getAttribute("noteid");
-    const  titleString = document.getElementById("editTitle").value;
-    const  contentString = document.getElementById("editContent").value;
-    const noteData = {
-        _id:noteId,
-        title: titleString,
-        content: contentString
-    }
-    updateNote(noteData).then(response=>{
+    const model = document.getElementById("editNoteModal");
+    const noteId = model.getAttribute("noteid");
+    const titleString = document.getElementById("editTitle").value;
+    const contentString = document.getElementById("editContent").value;
+
+    const noteData = { _id: noteId, title: titleString, content: contentString };
+
+    updateNote(noteData).then(response => {
         if (response.ok) {
             model.style.display = "none";
-            updateNotesTable(noteId);
+            updateNotesTable(noteId); // إعادة تحميل الجدول
         } else {
             response.text().then(err => {
-                document.getElementById("editError").innerHTML = err;
-            })
-
-
+                document.getElementById("editError").innerText = err;
+            });
         }
     }).catch(err => {
         console.log(err);
-        document.getElementById("editError").innerHTML = err;
-
-    })
+        document.getElementById("editError").innerText = err;
+    });
 }
