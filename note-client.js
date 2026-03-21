@@ -13,11 +13,14 @@ async function updateNote(noteData) {
     const response = await fetch(`${baseUrl}/notes/${noteData._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(noteData)
+        body: JSON.stringify({
+            title: noteData.title,
+            content: noteData.content
+        })
     });
     return response;
-
 }
+
 
 async function deleteNote(noteId) {
     const response = await fetch(`${baseUrl}/notes/${noteId}`, {
