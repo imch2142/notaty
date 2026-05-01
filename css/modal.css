@@ -1,131 +1,69 @@
-* {
-  font-family: Helvetica;
-}
-
-
-textarea {
-  width: 100%;
-  height: 100px;
-  font-size: 17px;
-}
-
-/* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-  -webkit-animation-name: fadeIn; /* Fade in the background */
-  -webkit-animation-duration: 0.4s;
-  animation-name: fadeIn;
-  animation-duration: 0.4s;
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px); /* تأثير ضبابي خلف النافذة */
 }
 
-/* Modal Content */
 .modal-content {
-  width: 50%;
-  position: absolute;
-  top: 30%;
-  margin-left: 25%;
-  background-color: #fefefe;
-  -webkit-animation-name: slideIn;
-  -webkit-animation-duration: 0.4s;
-  animation-name: slideIn;
-  animation-duration: 0.4s;
-}
-
-/* The Close X Button */
-.close {
-  color: white;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+    background-color: var(--white);
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 16px;
+    width: 500px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    border: none;
 }
 
 .modal-header {
-  padding: 2px 16px;
-  background-color: rgb(51, 51, 51);
-  color: white;
+    background: #f9fafb;
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text-dark);
 }
 
 .modal-body {
-  padding: 2px 16px;
+    padding: 25px;
 }
 
-.modal-body p {
-    font-size: 17px;
-    padding: 0px;
-    margin-top: 9px;
+.modal-input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+textarea {
+    height: 150px;
+    resize: none;
 }
 
 .modal-footer {
-  padding: 2px 16px;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  background-color: white;
-  color: white;
+    padding: 15px 25px;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
-@-webkit-keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* زر الإلغاء */
+#cancelAddNoteBtn, #cancelEditNoteBtn {
+    background-color: #e5e7eb;
+    color: var(--text-dark);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.row {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.left {
-  float: left;
-  width: 10%;
-  text-align: left;
-}
-
-.right {
-  float: left;
-  width: 90%;
-}
-
-.modal-input {
-  width: 100%;
-  height: 32px;
-  font-size: 17px;
-}
-
-.error {
-  color: red; 
-  text-align: center;
+#cancelAddNoteBtn:hover, #cancelEditNoteBtn:hover {
+    background-color: #d1d5db;
 }
